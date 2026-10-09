@@ -24,6 +24,137 @@ This project addresses these operational needs through a structured **Microsoft 
 **Objective:** Build a reliable database foundation that enables efficient food bank operations, reduces dependence on repetitive manual database tasks, and supports informed resource allocation.
 
 ---
+## 🚀 Setup & Execution Guide
+
+### Prerequisites
+
+To run this project locally, you will need:
+
+- Microsoft SQL Server (Developer or Express edition)
+- SQL Server Management Studio (SSMS) or a compatible SQL client
+- Git (optional, for cloning the repository)
+
+### 1. Clone the Repository
+
+Open a terminal and run:
+
+```bash
+git clone https://github.com/riandbritto/FoodBank-Database-Management-System.git
+cd FoodBank-Database-Management-System
+```
+
+Alternatively, select **Code → Download ZIP** on GitHub and extract the project files.
+
+### 2. Create the Database
+
+Connect to your SQL Server instance and execute:
+
+```sql
+IF DB_ID('FoodBankDB') IS NULL
+BEGIN
+    CREATE DATABASE FoodBankDB;
+END;
+GO
+
+USE FoodBankDB;
+GO
+```
+
+This initializes the database used throughout the project.
+
+### 3. Execute SQL Scripts
+
+The following is the recommended execution sequence after correcting and validating script dependencies.
+
+| Order | SQL Script | Purpose |
+|---|---|---|
+| 1 | `FoodBankDB_DBO_v3.sql` | Create relational tables, primary keys, foreign keys, and constraints |
+| 2 | `FoodBankDB_inserts_v3.sql` | Populate database tables with sample records |
+| 3 | `FoodBankDB_psm_v4.sql` | Create stored procedures, functions, views, and triggers |
+| 4 | `FoodBankDB_indexes_script_v1.sql` | Create indexes to support data retrieval |
+| 5 | `FoodBankDB_encryption_v2.sql` | Demonstrate encryption-related database functionality |
+
+**Important:** The scripts are provided as a development project and require validation before a complete fresh installation. Review any destructive statements before execution, particularly table drops and encryption-key operations.
+
+### 4. Load Sample Data
+
+After successfully creating the database tables, open and execute:
+
+`FoodBankDB_inserts_v3.sql`
+
+The script contains sample records for donors, donations, distribution centers, inventory, items, volunteers, suppliers, orders, programs, and recipients.
+
+### 5. Verify Database Installation
+
+Execute the following queries in SQL Server:
+
+```sql
+USE FoodBankDB;
+GO
+
+-- Verify donor records
+SELECT TOP (10) * FROM Donor;
+
+-- Verify donations
+SELECT TOP (10) * FROM Donation;
+
+-- Verify inventory
+SELECT TOP (10) * FROM Inventory;
+
+-- Verify distribution centers
+SELECT TOP (10) * FROM DistributionCenter;
+```
+
+If the scripts execute successfully, these queries should return the corresponding sample records.
+
+### 6. Explore Operational Data
+
+Run the following example query to examine donation activity:
+
+```sql
+SELECT
+    DonationType,
+    DonationStatus,
+    COUNT(*) AS TotalDonations
+FROM Donation
+GROUP BY DonationType, DonationStatus;
+```
+
+To inspect inventory by distribution center:
+
+```sql
+SELECT
+    dc.CenterName,
+    i.InventoryCapacity,
+    i.StockQuantity
+FROM DistributionCenter AS dc
+JOIN Inventory AS i
+    ON dc.CenterID = i.CenterID;
+```
+
+### 7. Review Project Documentation
+
+For additional details, refer to:
+
+- [Logical Database ERD](LogicalERD_FoodBank_v3.pdf)
+- [Food Bank Visualizations](FoodBank%20Visualization.pdf)
+- Project summary document included in the repository
+
+### 8. Troubleshooting
+
+**Database not found:** Confirm that `FoodBankDB` was created before running the scripts.
+
+**Invalid object name:** Ensure the schema script completed successfully and that the correct database is selected.
+
+**Foreign key constraint errors:** Check that referenced parent records exist before inserting dependent records.
+
+**Stored procedure errors:** Review procedure parameters, required table columns, and database object dependencies.
+
+**Encryption errors:** Verify the database encryption configuration and use secure, environment-specific credentials.
+
+### Note
+
+This project is intended for educational and portfolio demonstration purposes. The scripts should be tested and reviewed before being used in a production environment.
 
 ## 🛠️ Technical Stack
 
