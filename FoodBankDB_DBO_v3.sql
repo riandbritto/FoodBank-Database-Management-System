@@ -1,7 +1,14 @@
 --CREATE DATABASE FoodBankDB
 
-use FoodBankDB;
-Go
+IF DB_ID('FoodBankDB') IS NULL
+BEGIN
+    CREATE DATABASE FoodBankDB;
+END;
+GO
+
+USE FoodBankDB;
+GO
+
 
 -- drop if exists
 DROP TABLE IF EXISTS Items
